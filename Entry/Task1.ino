@@ -1,5 +1,8 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include "secrets.h"
+#include "ThingSpeak.h"
+
 
 WiFiMulti wifiMulti;
 

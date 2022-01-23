@@ -27,8 +27,8 @@ void setup() {
   if(g_dev_res_status == 1){
     StartWiFi();
     StartSensors();
-    xTaskCreatePinnedToCore(Task1, "Task1", 2048, NULL, 2, NULL, 1);
-    xTaskCreatePinnedToCore(Task3, "Task3", 1024, NULL, 2, NULL, 1);
+    xTaskCreatePinnedToCore(Task1, "Task1", 4096, NULL, 2, NULL, 1);
+    xTaskCreatePinnedToCore(Task3, "Task3", 2048, NULL, 2, NULL, 0);
 
   }else{
     StartBLE();

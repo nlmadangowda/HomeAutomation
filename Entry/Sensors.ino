@@ -14,6 +14,14 @@ DHT_Unified dht(DHT_PIN_DI, DHTTYPE);
 BH1750 lightMeter(0x23);
 uint32_t delayMS;
 
+typedef struct _sensor_data_{
+  double s_dht_temp;
+  double s_dht_humi;
+  float s_bh1750_lux;
+}SensorData;
+
+SensorData g_sensor_data;
+
 void Setup_DHT(){
   dht.begin();
   Serial.println(F("DHTxx Unified Sensor Example"));
@@ -59,22 +67,26 @@ void StartSensors(){
 }
 
 void Read_DHT11(){
+  
   sensors_event_t event;
+  
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
   }
   else {
+    g_sensor_data.s_dht_temp = event.temperature;
     Serial.print(F("Temperature: "));
     Serial.print(event.temperature);
     Serial.println(F("°C"));
   }
-  // Get humidity event and print its value.
+  
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
   }
   else {
+    g_sensor_data.s_dht_humi = event.relative_humidity;
     Serial.print(F("Humidity: "));
     Serial.print(event.relative_humidity);
     Serial.println(F("%"));
@@ -84,9 +96,9 @@ void Read_DHT11(){
 
 void Read_BH1750(){
   if (lightMeter.measurementReady()) {
-    float lux = lightMeter.readLightLevel();
+    g_sensor_data.s_bh1750_lux = lightMeter.readLightLevel();
     Serial.print("Light: ");
-    Serial.print(lux);
+    Serial.print(g_sensor_data.s_bh1750_lux);
     Serial.println(" lx");
   }
 }
