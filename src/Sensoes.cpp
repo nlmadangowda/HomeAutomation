@@ -105,7 +105,7 @@ void Read_BH1750(){
 }
 
 
-void Task3(void *pvParameters){
+void SensorTask(void *pvParameters){
   while(1){
     delay(500);
     Read_BH1750();

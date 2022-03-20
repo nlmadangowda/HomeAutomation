@@ -4,7 +4,7 @@
 #include <WiFiMulti.h>
 WiFiMulti wifiMulti;
 
-void Task1(void *pvParameters){
+void WifiTask(void *pvParameters){
   (void) pvParameters;
   while(1){
     if(wifiMulti.run() != WL_CONNECTED) {
