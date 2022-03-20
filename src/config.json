@@ -1,8 +1,1 @@
-R"({
-    "confg_status": 0,
-    "wifi_ssid": "ACTFIBERNET_5G",
-    "wifi_pass": "act12345",
-    "thingspeak_c_id": 1,
-    "thingspeak_apikey": "wqrhonsapoifosafosaiufgss",
-    "mobile_num":"7022703372"
-})"
+R"({"confg_status": 0,"wifi_ssid": "ACTFIBERNET_5G","wifi_pass": "act12345","thingspeak_c_id": 1680155,"thingspeak_apikey": "7TXEYK6XZO446CJZ","mobile_num":"7022703372"})"
