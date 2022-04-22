@@ -4,6 +4,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <ArduinoJson.h>
+#include "SPIFFS.h"
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
@@ -44,14 +45,32 @@ int UpdateDevConfig(char*str){
   if(strlen(doc_wifi_pass)<=sizeof(g_dev_config.wifi_pass)){
     memcpy(&g_dev_config.wifi_pass[0],doc_wifi_pass,strlen(doc_wifi_pass));
   }
-  Serial.println(g_dev_config.mobile_num);
-  Serial.println(g_dev_config.wifi_pass);
-  Serial.println(g_dev_config.wifi_ssid);
-  Serial.println(g_dev_config.thingspeak_apikey);
-  Serial.println(g_dev_config.thingspeak_c_id);
-  Serial.println(g_dev_config.confg_status);
   return 1;
 }
+
+int UpdateDevConfigFile(DevConfig *config,size_t size){
+  const uint8_t *buff = (const uint8_t *)config;
+  if(!SPIFFS.begin(true)){
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return 0;
+  }
+  
+  File file = SPIFFS.open("/config.json",FILE_WRITE);
+  if(!file){
+    Serial.println("Failed to open file for reading");
+    return 0;
+  }
+
+  size_t w_size = file.write(buff,size);
+  if(w_size!=size){
+    Serial.println("Failed to Update config file to device");
+  }
+
+  file.close();
+  SPIFFS.end();
+  return 0;
+}
+
 char g_config_data[360]={0};
 static int ParseConfigJson(std::string str){
   if (str.length() > 0) {
@@ -63,6 +82,7 @@ static int ParseConfigJson(std::string str){
     Serial.println(g_config_data);
     Serial.println("*********");
     UpdateDevConfig(g_config_data);
+    UpdateDevConfigFile(&g_dev_config,sizeof(g_dev_config));
     return 1;
   }
   return 0;
@@ -126,6 +146,7 @@ void StartBLE(){
 
 void BLETask(void *pvParameters){
   (void) pvParameters;
+  StartBLE();
   while(1){
     if (!deviceConnected && oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
