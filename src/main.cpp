@@ -38,9 +38,9 @@ void setup() {
   }
 
   if( g_dev_config.confg_status == 1){
-    // StartSensors();
-    xTaskCreatePinnedToCore(WifiTask, "WifiTask", 4096, NULL, 2, NULL, 1);
-    // xTaskCreatePinnedToCore(SensorTask, "SensorTask", 2048, NULL, 2, NULL, 0);
+    StartSensors();
+    xTaskCreatePinnedToCore(WifiTask, "WifiTask", 4096*4, NULL, 2, NULL, 1);
+    xTaskCreatePinnedToCore(SensorTask, "SensorTask", 4096, NULL, 2, NULL, 1);
   }else{
     xTaskCreatePinnedToCore(BLETask, "BLETask", 2048, NULL, 1, NULL, 1);
   }

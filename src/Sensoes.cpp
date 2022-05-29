@@ -61,7 +61,7 @@ void Setup_BH1750(){
 }
 
 void StartSensors(){
-    Setup_DHT();
+    // Setup_DHT();
     
     Wire.begin();
     Setup_BH1750();
@@ -107,8 +107,8 @@ void Read_BH1750(){
 void SensorTask(void *pvParameters){
   while(1){
     delay(500);
-    Read_BH1750();
+    // Read_BH1750();
     delay(500);
-    Read_DHT11();
+    // Read_DHT11();
   }
 }
